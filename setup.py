@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
   name="twitchbot",
-  version="0.0.1",
+  version="0.0.2",
   author="mrquokka",
   author_email="mrquokka@yandex.ru",
   description="Twitch API bot",
@@ -22,5 +22,6 @@ setuptools.setup(
   ],
   package_dir={"": "src"},
   packages=setuptools.find_packages(where="src"),
+  install_requires=['twitchio'],
   python_requires=">=3.6",
 )
