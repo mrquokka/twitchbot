@@ -93,7 +93,7 @@ class Bot(commands.Bot):
       message=message_obj, prefix=prefix, valid=False, bot=self)
     author = context.author
     author_id = author.id
-    author_name = author.name
+    author_name = author.display_name
     content = content[len(PREFIX)::].lstrip()
     if content == 'рандом':
       is_new = storage['current_random'] is None
