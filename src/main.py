@@ -56,10 +56,15 @@ def check_random_ended():
     if sum not in values:
       values[sum] = []
     values[sum].append(info['name'])
-  text_rows = ['Результаты:']
+  text_rows = []
+  is_maked = False
   for sum in reversed(list(sorted(values.keys()))):
     for name in values[sum]:
-      text_rows.append('@{} - {}'.format(name, sum))
+      label = '@{} - {}'.format(name, sum)
+      if not is_maked:
+        label = 'Результаты: {}'.format(label)
+      is_maked = True
+      text_rows.append(label)
   result = '. '.join(text_rows)
   storage['current_random'] = None
   return result
@@ -122,7 +127,7 @@ class Bot(commands.Bot):
       for item in range(counter):
         item = random.randint(1, 6)
         sum = sum + item
-        random_result.append(chr(9855 + item))
+        random_result.append(chr(9311 + item))
 
       storage['messages'].append(
         '@{}, ваш результат - {} ({})'.format(
