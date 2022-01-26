@@ -21,25 +21,25 @@ storage = {
 
 
 async def checker():
-  started_bot = storage['started_bot']
-  if started_bot is not None:
-    ws_connection = started_bot._connection._websocket
-    if ws_connection is not None:
-      if not ws_connection.closed:
-        messages = list(storage['messages'])
-        storage['messages'].clear()
-        if storage['current_random']:
-          random_result = check_random_ended()
-          if random_result is not None:
-            messages.append(random_result)
-        if len(messages) > 0:
-          content = '. '.join(messages)
-          await started_bot._connection.send(
-            'PRIVMSG #{} :{}\r\n'.format(
-              CHANNEL, content)
-          )
-  await asyncio.sleep(1.5)
-  await checker()
+  while True:
+    started_bot = storage['started_bot']
+    if started_bot is not None:
+      ws_connection = started_bot._connection._websocket
+      if ws_connection is not None:
+        if not ws_connection.closed:
+          messages = list(storage['messages'])
+          storage['messages'].clear()
+          if storage['current_random']:
+            random_result = check_random_ended()
+            if random_result is not None:
+              messages.append(random_result)
+          if len(messages) > 0:
+            content = '. '.join(messages)
+            await started_bot._connection.send(
+              'PRIVMSG #{} :{}\r\n'.format(
+                CHANNEL, content)
+            )
+    await asyncio.sleep(1.5)
 
 
 def check_random_ended():
@@ -78,13 +78,6 @@ class Bot(commands.Bot):
       loop=loop)
     storage['started_bot'] = self
     loop.create_task(checker())
-
-  async def close(self):
-    """|coro|
-
-    Cleanly disconnects from the twitch IRC server
-    """
-    await self._connection._close()
 
   async def event_ready(self):
     print('Ботик {} загружен'.format(self.nick))
